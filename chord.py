@@ -1,29 +1,49 @@
+from constants import *
+from display import *
 
-KEYS = 'C', 'G', 'D', 'A', 'E', 'B', 'F#', 'Gb', 'Db', 'Ab', 'Eb', 'Bb', 'F'
-PITCHES_FLAT  = 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'
-PITCHES_SHARP = 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'
-LABELS = [  ('I', '', 'II', 'bIII', 'III', 'IV', '#IV', 'V', 'bVI', 'VI', 'bVII', 'VII'), 
-            {1: 'b9', 2: '9'}, 
-            {3: '-', 4: ''}, 
-            {5: '11', 6: '#11'}, 
-            {6: 'b5', 7: ''}, 
-            {8: 'b13', 9: '13'}, 
-            {9: 'dim7', 10: '7', 11: 'ma7'}
-            ]
+
+class Key():
+
+
+    def __init__(self, tonic_string, name, mode):
+        Key.display = display
+        self.tonic = KEYS.index(tonic_string.upper().strip())
+        self.pitch_names = PITCHES_FLAT if self.tonic > 6 else PITCHES_SHARP        
+        self.chords = []
+        self.tonic_chord = Chord(self, self.tonic, name, mode)
+        self.chords.append(self.tonic_chord)
+
+
+    def add_chord(self, step, name, mode):        
+        self.chords.append(Chord(self, self.tonic + step, name, mode))  
+
+        ## star pitches here somehow that arent diatonic
 
 
 
 class Chord():
 
 
-    def __init__(self, name, root, mode):
-        self.name = name        
+    def __init__(self, key, root, name, mode):
+        self.key = key
+        self.name = name
         self.root = root % 12
         self.mode = mode
         self.pitches = [(self.root + semitones) % 12 for semitones in self.mode] 
-        self.leads = [[] for i in range(len(self.mode))]
+        self.set_role()
+        self.find_avoids()
+        self.find_leads()
+        
 
-        ### AVOIDS ###
+    def set_role(self):
+        self.labels = []
+        self.labels.append(LABELS[0][(self.root - self.key.tonic) % 12])
+        for degree in range(1, len(self.mode)):      
+            self.labels.append(LABELS[degree][self.mode[degree]])
+
+
+    def find_avoids(self):
+        
         self.avoid_degrees = []
         for degree in range(1, len(self.mode)):
             pdegree = degree - 1
@@ -38,47 +58,37 @@ class Chord():
                     self.avoid_degrees.append(degree)
 
 
+    def find_leads(self):
 
-    def set_role(self, key):
-        self.key = key
-        self.labels = []
-        self.labels.append(LABELS[0][(self.root - self.key) % 12])
-        for degree in range(1, len(self.mode)):      
-            self.labels.append(LABELS[degree][self.mode[degree]])
-
-
-
-    def relate(self, chords):
-
-        ### LEADS ###
+        self.leads = [[] for i in range(len(self.mode))]
 
         # circle of fourths
-        for chord in chords:
+        for chord in self.key.chords:
             if chord.pitches[4] == self.root:
                 self.leads[0].append({chord: (self.root, 'light_blue')})
 
         # dominant / sub-dominant symmetry
-        for chord in chords:            
-            if  self.root == (self.key + 5) % 12 and chord.root == (self.key + 7) % 12 or \
-                self.root == (self.key + 7) % 12 and chord.root == (self.key + 5) % 12:                    
+        for chord in self.key.chords:            
+            if  self.root == (self.key.tonic + 5) % 12 and chord.root == (self.key.tonic + 7) % 12 or \
+                self.root == (self.key.tonic + 7) % 12 and chord.root == (self.key.tonic + 5) % 12:                    
                     self.leads[0].append({chord: (chord.root, 'light_cyan')})
 
         # semitone pulls
-        transitions = ( ((self.key - 1) % 12, self.key),            # leading tone to tonic
-                        ((self.key + 4) % 12, (self.key + 5) % 12), # major third to perfect fourth
-                        ((self.key + 5) % 12, (self.key + 4) % 12), # perfect fourth to major third
+        transitions = ( ((self.key.tonic - 1) % 12, self.key.tonic),            # leading tone to tonic
+                        ((self.key.tonic + 4) % 12, (self.key.tonic + 5) % 12), # major third to perfect fourth
+                        ((self.key.tonic + 5) % 12, (self.key.tonic + 4) % 12), # perfect fourth to major third
                         )
         for transition in transitions:
             start, target = transition
             if start in self.pitches[0:7:2]: # including leading tone in start, but not target
-                for chord in chords:
+                for chord in self.key.chords:
                     if chord == self:
                         continue
                     if target in chord.pitches[0:5:2]:
                         self.leads[self.pitches.index(start)].append({chord: (target, 'light_green')})
 
         # morphs (a bit controversial)
-        for chord in chords:
+        for chord in self.key.chords:
             if chord.root == 0: # don't morph to tonic
                 continue
             if self.root == chord.pitches[2]:
