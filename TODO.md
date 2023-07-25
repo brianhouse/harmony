@@ -1,11 +1,5 @@
-- A chord is just a mode until it is given a role
-- What is a key? A key is a tonic note AND and 
+should take colors out of the leads function and put in display
 
-it's like defining a harmonic world as a set of chords
-
-is a chord independent from it's role? you know, I don't think it is.
-
-it shouldn't be minor / major anyway, it should take any chord as tonic.
 
 
 ### minor

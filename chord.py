@@ -6,7 +6,6 @@ class Key():
 
 
     def __init__(self, tonic_string, name, mode):
-        Key.display = display
         self.tonic = KEYS.index(tonic_string.upper().strip())
         self.pitch_names = PITCHES_FLAT if self.tonic > 6 else PITCHES_SHARP        
         self.chords = []
@@ -16,9 +15,13 @@ class Key():
 
     def add_chord(self, step, name, mode):        
         self.chords.append(Chord(self, self.tonic + step, name, mode))  
-
+        for chord in self.chords:
+            chord.find_leads()
         ## star pitches here somehow that arent diatonic
 
+
+    def __str__(self):
+        return "\n".join([display(self, chord) for chord in self.chords[::-1]])
 
 
 class Chord():
@@ -32,7 +35,6 @@ class Chord():
         self.pitches = [(self.root + semitones) % 12 for semitones in self.mode] 
         self.set_role()
         self.find_avoids()
-        self.find_leads()
         
 
     def set_role(self):
@@ -60,12 +62,15 @@ class Chord():
 
     def find_leads(self):
 
+        ## colors should be in display
+        ## leads should be in categories, maybe
+
         self.leads = [[] for i in range(len(self.mode))]
 
         # circle of fourths
         for chord in self.key.chords:
             if chord.pitches[4] == self.root:
-                self.leads[0].append({chord: (self.root, 'light_blue')})
+                self.leads[0].append({chord: (self.root, 'light_blue')}) # looks purple
 
         # dominant / sub-dominant symmetry
         for chord in self.key.chords:            

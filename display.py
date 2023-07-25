@@ -3,12 +3,12 @@ from termcolor import colored
 
 def display(key, chord):
     s = []
-    # s.append(f"{chord.name.rjust(3)}\n")        
+    s.append(f"{chord.name.rjust(8)}\n")        
     for degree in (5, 3, 1, 6, 4, 2, 0):
 
         # analysis labels
         if degree == 0:
-            c = chord.name + "-" + chord.labels[degree]
+            c = chord.labels[degree]
             s.append(f"{c.rjust(8)}")
         else:
             s.append(f"{chord.labels[degree].rjust(8)}")
@@ -30,13 +30,13 @@ def display(key, chord):
 
         # transitions
         if len(chord.leads[degree]):
-            s.append(f" -> ")
+            s.append(f" → ")
             for lead in chord.leads[degree]:
                 for ch, (pitch, color) in lead.items():
-                    # if chords.index(ch) < 8:
-                    #     s.append(f"{colored(ch.name + '-' + ch.labels[0] + '(' + key.pitch_names[pitch] + ')', color, attrs=['underline'])}<{chords.index(ch)}> ")
-                    # else:
-                    s.append(f"{colored(ch.name + '-' + ch.labels[0] + '(' + key.pitch_names[pitch] + ')', color)} ")
-
+                    target = '(' + key.pitch_names[pitch] + ')' if pitch != ch.root else ""
+                    # s.append(f"{colored(ch.labels[0] + ch.labels[2] + ch.labels[6] + target, color)} ")
+                    s.append(f"{colored(ch.labels[0] + ':' + key.pitch_names[ch.root] + ch.labels[2] + ch.labels[6] + target, color)} ")
         s.append("\n")
     return "".join(s)
+
+
