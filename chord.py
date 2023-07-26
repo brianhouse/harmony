@@ -67,9 +67,9 @@ class Chord():
 
         self.leads = [[] for i in range(len(self.mode))]
 
-        # circle of fourths
+        # the circle: resolve down a fifth / up a fourth
         for chord in self.key.chords:
-            if chord.pitches[4] == self.root:
+            if (self.root + 5) % 12 == chord.root:
                 self.leads[0].append({chord: (self.root, 'light_blue')}) # looks purple
 
         # dominant / sub-dominant symmetry
@@ -78,23 +78,21 @@ class Chord():
                 self.root == (self.key.tonic + 7) % 12 and chord.root == (self.key.tonic + 5) % 12:                    
                     self.leads[0].append({chord: (chord.root, 'light_cyan')})
 
-        # semitone pulls
-        transitions = ( ((self.key.tonic - 1) % 12, self.key.tonic),            # leading tone to tonic
-                        ((self.key.tonic + 4) % 12, (self.key.tonic + 5) % 12), # major third to perfect fourth
-                        ((self.key.tonic + 5) % 12, (self.key.tonic + 4) % 12), # perfect fourth to major third
-                        )
-        for transition in transitions:
-            start, target = transition
-            if start in self.pitches[0:7:2]: # including leading tone in start, but not target
-                for chord in self.key.chords:
-                    if chord == self:
-                        continue
-                    if target in chord.pitches[0:5:2]:
-                        self.leads[self.pitches.index(start)].append({chord: (target, 'light_green')})
+        # semitone pulls from chord tone to chord tone
+        for start_degree in [0, 2, 4, 6]:  # including 7th in start, but not in target
+            if self.pitches[start_degree] == self.key.tonic: # tonic doesn't go anywhere
+                continue
+            for chord in self.key.chords:
+                if chord == self:
+                    continue
+                for target_degree in [0, 2, 4]:
+                    # print(chord.name, start_degree + 1, target_degree + 1, (chord.pitches[target_degree] - self.pitches[start_degree]) % 12, (chord.pitches[target_degree] - self.pitches[start_degree]) % 12 == 1)
+                    if (chord.pitches[target_degree] - self.pitches[start_degree]) % 12 in (1, 11):
+                        self.leads[start_degree].append({chord: (chord.pitches[target_degree], 'light_green')})
 
-        # morphs (a bit controversial)
+        # morphs (shared root/3rd, a bit controversial)
         for chord in self.key.chords:
-            if chord.root == 0: # don't morph to tonic
+            if chord.root == self.key.tonic: # don't morph to tonic
                 continue
             if self.root == chord.pitches[2]:
                 self.leads[0].append({chord: (self.root, 'magenta')})

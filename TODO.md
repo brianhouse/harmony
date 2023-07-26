@@ -1,15 +1,13 @@
-should take colors out of the leads function and put in display
-
+- should take colors out of the leads function and put in display
+- categories for chord types
+- identifying out-of-key notes / chords
 
 
 ### minor
 
 
-leads are major key specific. should work off of any mode. need to auto-detect half-steps.
+then it's just a matter of setting a different key and adding the chords. right?
 
-identifying out-of-key notes is also major specific.
-
-chord list itself is major-key specific.
 
 
 ### secondary dominants
