@@ -5,8 +5,7 @@
 
 ### minor
 
-not quite right with sharps and flats. D minor, for example, uses flats.
-
+should really not be a flag for minor, but a key offset
 
 
 ### secondary dominants
