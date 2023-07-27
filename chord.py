@@ -5,8 +5,10 @@ from display import *
 class Key():
 
 
-    def __init__(self, tonic_string, name, mode):
+    def __init__(self, tonic_string, name, mode, minor=True):
         self.key_index = KEYS.index(tonic_string.upper().strip())
+        if minor:
+            self.key_index = (self.key_index - 3) % len(KEYS)
         self.pitch_names = PITCHES_FLAT if self.key_index > 6 else PITCHES_SHARP        
         self.tonic = self.pitch_names.index(tonic_string)
         self.chords = []

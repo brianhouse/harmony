@@ -30,7 +30,7 @@ from chord import *
 # key.add_chord(5, 'BLUES MYX', MYX)
 
 
-key = Key('A', 'AOL', AOL)
+key = Key('D', 'AOL', AOL, True)
 key.add_chord(2, 'LOC', LOC)
 key.add_chord(3, 'ION', ION)
 key.add_chord(5, 'DOR', DOR)

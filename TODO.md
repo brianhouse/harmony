@@ -1,12 +1,11 @@
 - should bold transistions when there's multiple to one chord -- strong tendency
 - should take colors out of the leads function and put in display
 
-- use underline instead of * for accidental
+
 
 ### minor
 
-
-then it's just a matter of setting a different key and adding the chords. right?
+not quite right with sharps and flats. D minor, for example, uses flats.
 
 
 

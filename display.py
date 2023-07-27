@@ -15,7 +15,11 @@ def display(key, chord):
 
         # pitches
         pitch_name = key.pitch_names[chord.pitches[degree]]
-        attrs = ['underline'] if chord.accidentals[degree] else []        
+        attrs = []
+        if chord.accidentals[degree]:
+            attrs.append('underline')
+            if len(pitch_name) < 2:
+                pitch_name += '♮'   
         if degree in chord.avoid_degrees:
             s.append(f" {colored(pitch_name.ljust(2), 'red', attrs=attrs)}")
         elif degree % 2:
@@ -25,8 +29,6 @@ def display(key, chord):
             s.append(f" {colored(pitch_name.ljust(2), 'cyan', attrs=attrs)}")
         else:
             s.append(f" {colored(pitch_name.ljust(2), 'cyan', attrs=attrs)}")
-
-        # s.append("*" if not chord.accidentals[degree] else " ".rjust(2))
 
         # transitions
         if len(chord.leads[degree]):
