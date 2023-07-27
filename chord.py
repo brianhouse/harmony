@@ -6,18 +6,20 @@ class Key():
 
 
     def __init__(self, tonic_string, name, mode):
-        self.tonic = KEYS.index(tonic_string.upper().strip())
-        self.pitch_names = PITCHES_FLAT if self.tonic > 6 else PITCHES_SHARP        
+        self.key_index = KEYS.index(tonic_string.upper().strip())
+        self.pitch_names = PITCHES_FLAT if self.key_index > 6 else PITCHES_SHARP        
+        self.tonic = self.pitch_names.index(tonic_string)
         self.chords = []
         self.tonic_chord = Chord(self, self.tonic, name, mode)
         self.chords.append(self.tonic_chord)
 
 
     def add_chord(self, step, name, mode):        
-        self.chords.append(Chord(self, self.tonic + step, name, mode))  
+        chord = Chord(self, self.tonic + step, name, mode)
+        self.chords.append(chord) 
+        chord.accidentals = [pitch not in self.tonic_chord.pitches for pitch in chord.pitches]
         for chord in self.chords:
             chord.find_leads()
-        ## star pitches here somehow that arent diatonic
 
 
     def __str__(self):
@@ -33,6 +35,7 @@ class Chord():
         self.root = root % 12
         self.mode = mode
         self.pitches = [(self.root + semitones) % 12 for semitones in self.mode] 
+        self.accidentals = [False] * len(self.pitches)
         self.set_role()
         self.find_avoids()
         

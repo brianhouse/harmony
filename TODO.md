@@ -1,7 +1,7 @@
+- should bold transistions when there's multiple to one chord -- strong tendency
 - should take colors out of the leads function and put in display
-- categories for chord types
-- identifying out-of-key notes / chords
 
+- use underline instead of * for accidental
 
 ### minor
 
