@@ -37,7 +37,7 @@ def display(key, chord):
                 for ch, (pitch, color) in lead.items():
                     target = '(' + key.pitch_names[pitch] + ')' if pitch != ch.root else ""
                     # s.append(f"{colored(ch.labels[0] + ch.labels[2] + ch.labels[6] + target, color)} ")
-                    s.append(f"{colored(ch.labels[0] + ':' + key.pitch_names[ch.root] + ch.labels[2] + ch.labels[6] + target, color, attrs=[])} ")
+                    s.append(f"{colored(ch.labels[0] + ':' + key.pitch_names[ch.root] + ch.labels[2] + ch.labels[4] + ch.labels[6] + target, color, attrs=[])} ")
         s.append("\n")
     return "".join(s)
 

@@ -1,28 +1,23 @@
 - should bold transistions when there's multiple to one chord -- strong tendency
 - should take colors out of the leads function and put in display
 
-
-
 ### minor
 
-should really not be a flag for minor, but a key offset
+exclude transitions to same scale degree
 
 
 ### secondary dominants
 
 they are either going to their dominants, or they might be deceptive and going to another secondary dominant. that's in here.
 
-but they could also be going to a related II chord. do we get that? only if I add these chords in there. 
+they could also be going to some other related II chord that then goes to another secondary dominant. if all those chords are in the system, it's implicit, but that takes some prior intention.
 
-...but that would generate relationships that skip the dominant. so how do we deal with that? a concept of chord class, but that's not very fundamental.
-
+also, tensions on secondary dominants can be true to the chord OR diatonic to the home key, depending on how much tonicization you want to do. no real way to account for that here.
 
 
 ### other scale forms
 
-we depend on 7 notes
-
-and it's still very tertiary
+this depends on 7 note scales, and it's still very tertiary
 
 pentatonic scales, modes of different length, etc. how does that work with leading tones?
 
