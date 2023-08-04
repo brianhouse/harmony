@@ -7,7 +7,7 @@ PITCHES_SHARP = 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A
 LABELS = [  ('I', '', 'II', '♭III', 'III', 'IV', '♯IV', 'V', '♭VI', 'VI', '♭VII', 'VII'), 
             {1: '♭9', 2: '9'},              # 2nds
             {3: '-', 4: ''},                # 3rds
-            {5: '11', 6: '♯11'},            # 4ths
+            {4: '♭11', 5: '11', 6: '♯11'},  # 4ths
             {6: '♭5', 7: '', 8: '+'},       # 5ths 
             {8: '♭13', 9: '13'},            # 6ths
             {9: 'o7', 10: '7', 11: '∆7'}    # 7ths
@@ -29,8 +29,8 @@ LOC = rot(ION, 6)
 MODES = ION, DOR, PHR, LYD, MYX, AOL, LOC
 
 JAZ = 0, 2, 3, 5, 7, 9, 11
+HAR = 0, 2, 3, 5, 7, 8, 11
 
-print(rot(JAZ, 2))
 
 # https://en.wikipedia.org/wiki/Jazz_minor_scale
 # https://en.wikipedia.org/wiki/Acoustic_scale

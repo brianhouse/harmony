@@ -46,7 +46,14 @@ class Chord():
         self.labels = []
         self.labels.append(LABELS[0][(self.root - self.key.tonic) % 12])
         for degree in range(1, len(self.mode)):  
-            self.labels.append(LABELS[degree][self.mode[degree]])
+            try:
+                self.labels.append(LABELS[degree][self.mode[degree]])
+            except KeyError as e:
+                print(self.mode)
+                print('degree', degree)
+                print('label', LABELS[degree])
+                print('step', self.mode[degree])
+                raise e
 
 
     def find_avoids(self):

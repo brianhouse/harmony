@@ -32,21 +32,22 @@ from chord import *
 
 
 ## COMPOSITE MINOR
+# https://bocce.online.berklee.edu/#/15768/OCOMP-111.01/15847/5/composite-minor-chords-narrowed-down
 
 key = Key('A', 'AOL', AOL)
-key.add_chord(0, 'JAZ', JAZ)  # I-ma7  
+key.add_chord(0, 'JAZ', JAZ)  # I-ma7, a jazz minor mode
 key.add_chord(2, 'LOC', LOC)
-key.add_chord(2, 'DOR', DOR)  # borrow from Dorian
+key.add_chord(2, 'PHR', PHR)  # dorian mode2 (aka PHR)
 key.add_chord(3, 'ION', ION)
-key.add_chord(3, 'JZ2', rot(JAZ, 2))  # wait, is this a Jaz mode?
-
-# left off here
-# https://bocce.online.berklee.edu/#/15768/OCOMP-111.01/15847/5/composite-minor-chords-narrowed-down
+key.add_chord(3, 'JZ2', rot(JAZ, 2))  # a jazz minor mode
+key.add_chord(5, 'MYX', MYX)  # a dorian mode4 (aka MYX), also JAZ4
 key.add_chord(5, 'DOR', DOR)
+key.add_chord(7, 'PHR', PHR)  # natural (aeolian) V-7
 key.add_chord(7, 'MYX', MYX)  # substitute V7 for V-7
 key.add_chord(8, 'LYD', LYD)
-key.add_chord(10,'MYX', MYX)
-key.add_chord(11,'LOC', LOC)  # include VII-
+key.add_chord(9, 'LOC', LOC)  # dorian mode6, also JAZ6
+key.add_chord(10,'MYX', MYX)  # natural (aeolian) bVII7
+key.add_chord(11,'HR7', rot(HAR, 6))  # VIIdim from harmonic minor
 
 # # secondary dominants
 # key.add_chord(10, 'V7/♭III', MYX)  # same as MYX7
