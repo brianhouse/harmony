@@ -37,6 +37,9 @@ class Chord():
         self.root = root % 12
         self.mode = mode
         self.pitches = [(self.root + semitones) % 12 for semitones in self.mode] 
+        # diatonic?
+        # self.pitch_names = self.key.pitch_names
+        # self.pitch_names = PITCHES_FLAT if self.key_index > 6 else PITCHES_SHARP        
         self.accidentals = [False] * len(self.pitches)
         self.set_role()
         self.find_avoids()

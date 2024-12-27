@@ -4,7 +4,7 @@
 ### minor
 
 got the chord spelling wrong!
-have to choose pitches based on the chord
+have to choose pitches based on the chord if it's not diatonic
 
 
 exclude transitions to same scale degree
