@@ -33,9 +33,6 @@ class Chord():
         self.root = root % 12
         self.mode = mode
         self.pitches = [(self.root + semitones) % 12 for semitones in self.mode]
-        # diatonic?
-        # self.pitch_names = self.key.pitch_names
-        # self.pitch_names = PITCHES_FLAT if self.key_index > 6 else PITCHES_SHARP
         self.accidentals = [False] * len(self.pitches)
         self.set_role()
         self.find_avoids()
@@ -70,17 +67,17 @@ class Chord():
 
     def find_leads(self):
 
-        ## colors should be in display
-        ## leads should be in categories, maybe
+        # colors should be in display
+        # leads should be in categories, maybe
 
         self.leads = [[] for i in range(len(self.mode))]
 
         # the circle: resolve down a fifth / up a fourth
         for chord in self.key.chords:
             if (self.root + 5) % 12 == chord.root:
-                self.leads[0].append({chord: (self.root, 'light_blue')}) # looks purple
+                self.leads[0].append({chord: (self.root, 'light_blue')})  # looks purple
 
-        # dominant / sub-dominant symmetry
+        # dominant <-> sub-dominant
         for chord in self.key.chords:
             if self.root == (self.key.tonic + 5) % 12 and chord.root == (self.key.tonic + 7) % 12 or \
                self.root == (self.key.tonic + 7) % 12 and chord.root == (self.key.tonic + 5) % 12:
@@ -88,7 +85,7 @@ class Chord():
 
         # semitone pulls from chord tone to chord tone
         for start_degree in [0, 2, 4, 6]:  # including 7th in start, but not in target
-            if self.pitches[start_degree] == self.key.tonic: # tonic doesn't go anywhere
+            if self.pitches[start_degree] == self.key.tonic:  # tonic doesn't go anywhere
                 continue
             for chord in self.key.chords:
                 if chord == self:
@@ -106,5 +103,3 @@ class Chord():
                 self.leads[0].append({chord: (self.root, 'magenta')})
             if self.pitches[2] == chord.root:
                 self.leads[2].append({chord: (chord.root, 'magenta')})
-
-

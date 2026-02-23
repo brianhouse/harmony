@@ -4,14 +4,15 @@ KEYS = 'C', 'G', 'D', 'A', 'E', 'B', 'F♯', 'D♭', 'A♭', 'E♭', 'B♭', 'F'
 PITCHES_FLAT  = 'C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'
 PITCHES_SHARP = 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'
 
-LABELS = [  ('I', '', 'II', '♭III', 'III', 'IV', '♯IV', 'V', '♭VI', 'VI', '♭VII', 'VII'), 
+LABELS = [  ('I', '', 'II', '♭III', 'III', 'IV', '♯IV', 'V', '♭VI', 'VI', '♭VII', 'VII'),
             {1: '♭9', 2: '9'},              # 2nds
             {3: '-', 4: ''},                # 3rds
             {4: '♭11', 5: '11', 6: '♯11'},  # 4ths
-            {6: '♭5', 7: '', 8: '+'},       # 5ths 
+            {6: '♭5', 7: '', 8: '+'},       # 5ths
             {8: '♭13', 9: '13'},            # 6ths
             {9: 'o7', 10: '7', 11: '∆7'}    # 7ths
             ]
+
 
 def rot(scale, steps):
     scale = scale[steps:] + scale[:steps]
