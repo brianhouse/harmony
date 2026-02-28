@@ -10,22 +10,22 @@ class Key():
         key_index = (key_index + signature_offset) % len(KEYS)
         self.pitch_names = PITCHES_FLAT if key_index > 6 else PITCHES_SHARP
         self.tonic = self.pitch_names.index(tonic_string)
-        self.chords = []
-        self.tonic_chord = Chord(self, self.tonic, name, mode)
-        self.chords.append(self.tonic_chord)
+        self.scales = []
+        self.tonic_scale = Scale(self, self.tonic, name, mode)
+        self.scales.append(self.tonic_scale)
 
-    def add_chord(self, step, name, mode):
-        chord = Chord(self, self.tonic + step, name, mode)
-        self.chords.append(chord)
-        chord.accidentals = [pitch not in self.tonic_chord.pitches for pitch in chord.pitches]
-        for chord in self.chords:
-            chord.find_transitions()
+    def add_scale(self, step, name, mode):
+        scale = Scale(self, self.tonic + step, name, mode)
+        self.scales.append(scale)
+        scale.accidentals = [pitch not in self.tonic_scale.pitches for pitch in scale.pitches]
+        for scale in self.scales:
+            scale.find_transitions()
 
     def __str__(self):
-        return "\n".join([display(self, chord) for chord in self.chords[::-1]])
+        return "\n".join([display(self, scale) for scale in self.scales[::-1]])
 
 
-class Chord():
+class Scale():
 
     def __init__(self, key, root, name, mode):
         self.key = key
@@ -73,33 +73,33 @@ class Chord():
         self.transitions = [[] for i in range(len(self.mode))]
 
         # the circle: resolve down a fifth / up a fourth
-        for chord in self.key.chords:
-            if (self.root + 5) % 12 == chord.root:
-                self.transitions[0].append({chord: (self.root, CIRCLE)})  # purple
+        for scale in self.key.scales:
+            if (self.root + 5) % 12 == scale.root:
+                self.transitions[0].append({scale: (self.root, CIRCLE)})  # purple
 
         # dominant <-> sub-dominant
-        for chord in self.key.chords:
-            if self.root == (self.key.tonic + 5) % 12 and chord.root == (self.key.tonic + 7) % 12 or \
-               self.root == (self.key.tonic + 7) % 12 and chord.root == (self.key.tonic + 5) % 12:
-                self.transitions[0].append({chord: (chord.root, DOM)})
+        for scale in self.key.scales:
+            if self.root == (self.key.tonic + 5) % 12 and scale.root == (self.key.tonic + 7) % 12 or \
+               self.root == (self.key.tonic + 7) % 12 and scale.root == (self.key.tonic + 5) % 12:
+                self.transitions[0].append({scale: (scale.root, DOM)})
 
-        # semitone pulls from chord tone to chord tone
+        # semitone pulls from scale tone to scale tone
         for start_degree in [0, 2, 4, 6]:  # including 7th in start, but not in target
             if self.pitches[start_degree] == self.key.tonic:  # tonic doesn't go anywhere
                 continue
-            for chord in self.key.chords:
-                if chord == self:
+            for scale in self.key.scales:
+                if scale == self:
                     continue
                 for target_degree in [0, 2, 4]:
-                    # print(chord.name, start_degree + 1, target_degree + 1, (chord.pitches[target_degree] - self.pitches[start_degree]) % 12, (chord.pitches[target_degree] - self.pitches[start_degree]) % 12 == 1)
-                    if (chord.pitches[target_degree] - self.pitches[start_degree]) % 12 in (1, 11):
-                        self.transitions[start_degree].append({chord: (chord.pitches[target_degree], PULL)})
+                    # print(scale.name, start_degree + 1, target_degree + 1, (scale.pitches[target_degree] - self.pitches[start_degree]) % 12, (scale.pitches[target_degree] - self.pitches[start_degree]) % 12 == 1)
+                    if (scale.pitches[target_degree] - self.pitches[start_degree]) % 12 in (1, 11):
+                        self.transitions[start_degree].append({scale: (scale.pitches[target_degree], PULL)})
 
         # morphs (shared root/3rd, a bit controversial)
-        for chord in self.key.chords:
-            if chord.root == self.key.tonic:  # don't morph to tonic
+        for scale in self.key.scales:
+            if scale.root == self.key.tonic:  # don't morph to tonic
                 continue
-            if self.root == chord.pitches[2]:
-                self.transitions[0].append({chord: (self.root, MORPH)})
-            if self.pitches[2] == chord.root:
-                self.transitions[2].append({chord: (chord.root, MORPH)})
+            if self.root == scale.pitches[2]:
+                self.transitions[0].append({scale: (self.root, MORPH)})
+            if self.pitches[2] == scale.root:
+                self.transitions[2].append({scale: (scale.root, MORPH)})
