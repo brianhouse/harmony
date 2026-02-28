@@ -14,13 +14,11 @@ Voice-leading is stepwise motion, avoiding parallel motion, all the counterpoint
 ## todo
 
 - should bold transistions when there's multiple to one chord -- strong tendency
-- should take colors out of the leads function and put in display [what?]
 
 - what do the colors mean again?
 
 - think about how 2, 4 sus and 6ths can be represented; separate chords listed in parallel to indicate the same functional role. the mode name and functional role applies to the whole row.
 
-- listing a 7th chord in the leads doesn't make sense, unless it is indeed pointing to a specific voicing. right now I am basically just showing the 7th chord.
 
 
 

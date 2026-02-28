@@ -1,4 +1,5 @@
 from termcolor import colored
+from constants import *
 
 
 def display(key, chord):
@@ -34,7 +35,15 @@ def display(key, chord):
         if len(chord.transitions[degree]):
             s.append("→ ")
             for transition in chord.transitions[degree]:
-                for ch, (pitch, color) in transition.items():
+                for ch, (pitch, kind) in transition.items():
+                    if kind == CIRCLE:
+                        color = 'light_blue'  # looks purple
+                    elif kind == DOM:
+                        color = 'light_cyan'
+                    elif kind == PULL:
+                        color = 'green'
+                    elif kind == MORPH:
+                        color = 'magenta'
                     target = '(' + key.pitch_names[pitch] + ')' if pitch != ch.root else ""
                     # s.append(f"{colored(ch.labels[0] + ch.labels[2] + ch.labels[6] + target, color)} ")
                     # s.append(f"{colored(ch.labels[0] + ':' + key.pitch_names[ch.root] + ch.labels[2] + ch.labels[4] + ch.labels[6] + target, color, attrs=[])} ")

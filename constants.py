@@ -35,3 +35,9 @@ HAR = 0, 2, 3, 5, 7, 8, 11
 
 # https://en.wikipedia.org/wiki/Jazz_minor_scale
 # https://en.wikipedia.org/wiki/Acoustic_scale
+
+CIRCLE = 0
+DOM = 1
+PULL = 2
+MORPH = 3
+

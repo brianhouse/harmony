@@ -1,5 +1,5 @@
 from constants import *
-from display import *
+from display import display
 
 
 class Key():
@@ -75,13 +75,13 @@ class Chord():
         # the circle: resolve down a fifth / up a fourth
         for chord in self.key.chords:
             if (self.root + 5) % 12 == chord.root:
-                self.transitions[0].append({chord: (self.root, 'light_blue')})  # looks purple
+                self.transitions[0].append({chord: (self.root, CIRCLE)})  # purple
 
         # dominant <-> sub-dominant
         for chord in self.key.chords:
             if self.root == (self.key.tonic + 5) % 12 and chord.root == (self.key.tonic + 7) % 12 or \
                self.root == (self.key.tonic + 7) % 12 and chord.root == (self.key.tonic + 5) % 12:
-                self.transitions[0].append({chord: (chord.root, 'light_cyan')})
+                self.transitions[0].append({chord: (chord.root, DOM)})
 
         # semitone pulls from chord tone to chord tone
         for start_degree in [0, 2, 4, 6]:  # including 7th in start, but not in target
@@ -93,13 +93,13 @@ class Chord():
                 for target_degree in [0, 2, 4]:
                     # print(chord.name, start_degree + 1, target_degree + 1, (chord.pitches[target_degree] - self.pitches[start_degree]) % 12, (chord.pitches[target_degree] - self.pitches[start_degree]) % 12 == 1)
                     if (chord.pitches[target_degree] - self.pitches[start_degree]) % 12 in (1, 11):
-                        self.transitions[start_degree].append({chord: (chord.pitches[target_degree], 'light_green')})
+                        self.transitions[start_degree].append({chord: (chord.pitches[target_degree], PULL)})
 
         # morphs (shared root/3rd, a bit controversial)
         for chord in self.key.chords:
             if chord.root == self.key.tonic:  # don't morph to tonic
                 continue
             if self.root == chord.pitches[2]:
-                self.transitions[0].append({chord: (self.root, 'magenta')})
+                self.transitions[0].append({chord: (self.root, MORPH)})
             if self.pitches[2] == chord.root:
-                self.transitions[2].append({chord: (chord.root, 'magenta')})
+                self.transitions[2].append({chord: (chord.root, MORPH)})
