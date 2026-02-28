@@ -67,5 +67,7 @@ key.add_chord(10, 'MYX', MYX)  # natural (aeolian) bVII7
 # key.add_chord(0, 'V7/IV', MYX)
 # key.add_chord(2, 'V7/V', MYX)
 
+# neapolitan chord?
+
 
 print(key)

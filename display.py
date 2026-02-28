@@ -31,12 +31,13 @@ def display(key, chord):
             s.append(f" {colored(pitch_name.ljust(2), 'cyan', attrs=attrs)}")
 
         # transitions
-        if len(chord.leads[degree]):
+        if len(chord.transitions[degree]):
             s.append("→ ")
-            for lead in chord.leads[degree]:
-                for ch, (pitch, color) in lead.items():
+            for transition in chord.transitions[degree]:
+                for ch, (pitch, color) in transition.items():
                     target = '(' + key.pitch_names[pitch] + ')' if pitch != ch.root else ""
                     # s.append(f"{colored(ch.labels[0] + ch.labels[2] + ch.labels[6] + target, color)} ")
-                    s.append(f"{colored(ch.labels[0] + ':' + key.pitch_names[ch.root] + ch.labels[2] + ch.labels[4] + ch.labels[6] + target, color, attrs=[])} ")
+                    # s.append(f"{colored(ch.labels[0] + ':' + key.pitch_names[ch.root] + ch.labels[2] + ch.labels[4] + ch.labels[6] + target, color, attrs=[])} ")
+                    s.append(f"{colored(ch.labels[0] + ':' + key.pitch_names[ch.root] + target, color, attrs=[])} ")
         s.append("\n")
     return "".join(s)
