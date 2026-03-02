@@ -5,13 +5,30 @@ from chord import *
 
 # MAJOR
 
-# key = Key('F', 'ION', ION)
-# key.add_scale(2, 'DOR', DOR)
-# key.add_scale(4, 'PHR', PHR)
-# key.add_scale(5, 'LYD', LYD)
-# key.add_scale(7, 'MYX', MYX)
-# key.add_scale(9, 'AOL', AOL)
-# key.add_scale(11,'LOC', LOC)
+key = Key('C', 'ION')
+key.add_scale(2, 'DOR')
+key.add_scale(4, 'PHR')
+key.add_scale(5, 'LYD')
+key.add_scale(7, 'MYX')
+key.add_scale(9, 'AOL')
+key.add_scale(11,'LOC')
+
+print(key)
+
+## a couple of instances of illegal 6th chords (well, aren't maj7s illegal?)
+
+
+# Avoid Notes in Major Scale Modes (Diatonic)
+# Ionian (I): 4th degree
+# Dorian (ii): None (or 6th in some contexts)
+# Phrygian (iii): 2nd and 6th degrees
+# Lydian (IV): None
+# Mixolydian (V): 4th degree
+# Aeolian (vi): 6th degree
+# Locrian (vii°): 2nd degree
+
+# this is all covered by semitones
+
 
 # # interchange. how to label as such?
 # # auto detect and label the whole chord as non-diatonic?
@@ -45,21 +62,21 @@ from chord import *
 # COMPOSITE MINOR
 # https://bocce.online.berklee.edu/#/15768/OCOMP-111.01/15847/5/composite-minor-chords-narrowed-down
 
-key = Key('D', 'AOL', AOL)
-# key.add_scale(0, 'DOR', DOR)  # I-ma7, a jazz minor mode
-# key.add_scale(0, 'JAZ', JAZ)  # I-ma7, a jazz minor mode
-key.add_scale(2, 'LOC', LOC)
-# key.add_scale(2, 'PHR', PHR)  # dorian mode2 (aka PHR)
-key.add_scale(3, 'ION', ION)
-# key.add_scale(3, 'JZ2', rot(JAZ, 2))  # a jazz minor mode
-# key.add_scale(5, 'MYX', MYX)  # a dorian mode4 (aka MYX), also JAZ4
-key.add_scale(5, 'DOR', DOR)
-key.add_scale(7, 'PHR', PHR)  # natural (aeolian) V-7
-# key.add_scale(7, 'MYX', MYX)  # substitute V7 for V-7
-key.add_scale(8, 'LYD', LYD)
-# key.add_scale(9, 'LOC', LOC)  # dorian mode6, also JAZ6
-key.add_scale(10, 'MYX', MYX)  # natural (aeolian) bVII7
-# key.add_scale(11,'HR7', rot(HAR, 6))  # VIIdim from harmonic minor
+# key = Key('D', 'MINOR')
+# # key.add_scale(0, 'DOR')  # I-ma7, a jazz minor mode
+# # key.add_scale(0, 'JAZ')  # I-ma7, a jazz minor mode
+# key.add_scale(2, 'LOC')
+# # key.add_scale(2, 'PHR')  # dorian mode2 (aka PHR)
+# key.add_scale(3, 'ION')
+# # key.add_scale(3, 'JZ2', rot(JAZ, 2))  # a jazz minor mode
+# # key.add_scale(5, 'MYX')  # a dorian mode4 (aka MYX), also JAZ4
+# key.add_scale(5, 'DOR')
+# key.add_scale(7, 'PHR')  # natural (aeolian) V-7
+# # key.add_scale(7, 'MYX')  # substitute V7 for V-7
+# key.add_scale(8, 'LYD')
+# # key.add_scale(9, 'LOC')  # dorian mode6, also JAZ6
+# key.add_scale(10, 'MYX')  # natural (aeolian) bVII7
+# # key.add_scale(11,'HR7', rot(HAR, 6))  # VIIdim from harmonic minor
 
 # # secondary dominants
 # key.add_scale(9, 'V7/II', MYX)  # same as MYX6
@@ -70,4 +87,4 @@ key.add_scale(10, 'MYX', MYX)  # natural (aeolian) bVII7
 # neapolitan chord?
 
 
-print(key)
+# print(key)

@@ -6,7 +6,7 @@
 
 - what do the colors mean again?
 
-- think about how 2, 4 sus and 6ths can be represented; separate chords listed in parallel to indicate the same functional role. the mode name and functional role applies to the whole row.
+
 
 
 

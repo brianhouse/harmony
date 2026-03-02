@@ -4,22 +4,20 @@ from display import display
 
 class Key():
 
-    def __init__(self, tonic_string, name, mode):
-        key_index = KEYS.index(tonic_string.upper().strip())
-        signature_offset = MODES[0][MODES.index(mode)]
-        key_index = (key_index + signature_offset) % len(KEYS)
+    def __init__(self, tonic_name, maj_min):
+        tonic_name = tonic_name.upper().strip()
+        key_index = KEYS.index(tonic_name) + (5 if maj_min == 'MINOR' else 0)
         self.pitch_names = PITCHES_FLAT if key_index > 6 else PITCHES_SHARP
-        self.tonic = self.pitch_names.index(tonic_string)
+        self.tonic = self.pitch_names.index(tonic_name)
         self.scales = []
-        self.tonic_scale = Scale(self, self.tonic, name, mode)
-        self.scales.append(self.tonic_scale)
+        self.add_scale(0, 'AOL' if maj_min == 'MINOR' else 'ION')
 
-    def add_scale(self, step, name, mode):
-        scale = Scale(self, self.tonic + step, name, mode)
+    def add_scale(self, step, mode_name):
+        scale = Scale(self, self.tonic + step, mode_name)
         self.scales.append(scale)
-        scale.accidentals = [pitch not in self.tonic_scale.pitches for pitch in scale.pitches]
         for scale in self.scales:
-            scale.find_transitions()
+            for chord in scale.chords:
+                chord.find_transitions()
 
     def __str__(self):
         return "\n".join([display(self, scale) for scale in self.scales[::-1]])
@@ -27,79 +25,97 @@ class Key():
 
 class Scale():
 
-    def __init__(self, key, root, name, mode):
+    def __init__(self, key, root, mode_name):
         self.key = key
-        self.name = name
-        self.root = root % 12
-        self.mode = mode
+        self.root = root
+        self.mode_name = mode_name
+        self.mode = globals()[mode_name]
         self.pitches = [(self.root + semitones) % 12 for semitones in self.mode]
-        self.accidentals = [False] * len(self.pitches)
+        self.accidentals = [pitch not in self.key.scales[0].pitches if len(self.key.scales) else False for pitch in self.pitches]
+        self.chords = [Chord(self, kind) for kind in CHORDS]
         self.set_role()
-        self.find_avoids()
 
     def set_role(self):
+        self.function = FUNCTIONS[(self.root - self.key.tonic) % 12]
         self.labels = []
-        self.labels.append(LABELS[0][(self.root - self.key.tonic) % 12])
-        for degree in range(1, len(self.mode)):
+        for step in range(len(self.mode)):
             try:
-                self.labels.append(LABELS[degree][self.mode[degree]])
+                self.labels.append(LABELS[step][self.mode[step]])
             except KeyError as e:
-                print(self.mode)
-                print('degree', degree)
-                print('label', LABELS[degree])
-                print('step', self.mode[degree])
+                print('mode', self.mode)
+                print('step number', step)
+                print('label', LABELS[step])
+                print('step', self.mode[step])
                 raise e
+
+
+class Chord():
+
+    def __init__(self, scale, functional_degrees):
+        self.scale = scale
+        self.functional_degrees = functional_degrees
+        self.avoid_degrees = []
+        self.find_avoids()
+        self.transitions = {}
+        self.find_transitions()
 
     def find_avoids(self):
 
-        self.avoid_degrees = []
-        for degree in range(1, len(self.mode)):
+        for degree in range(1, len(self.scale.mode)):
             pdegree = degree - 1
 
-            # no half-steps above chord tones
-            if pdegree in (0, 2, 4, 6) and self.mode[degree] - self.mode[pdegree] == 1:
-                self.avoid_degrees.append(degree)
-
-            # no tritones with chord tones other than root, unless it's dom7
-            for pdegree in (2, 4, 6):
-                if degree != 6 and self.mode[degree] - self.mode[pdegree] == 6:
+            # no half-steps above functional degrees
+            if self.scale.mode[degree] - self.scale.mode[pdegree] == 1:
+                if pdegree in self.functional_degrees:
                     self.avoid_degrees.append(degree)
+
+            # # no tritones above functional degrees other than root, unless it's a 3rd in dom7
+            # if self.scale.mode[degree] - self.scale.mode[pdegree] == 6 and degree != 0:
+            #     if not (pdegree == 2 and self.scale.mode[degree] == 10):
+            #         self.avoid_degrees.append(degree)
+
+        self.avoid_degrees = list(set(self.avoid_degrees))
 
     def find_transitions(self):
 
-        # colors should be in display
-        # transitions should be in categories, maybe
+        for degree in range(7):  # 0-indexed, natch
 
-        self.transitions = [[] for i in range(len(self.mode))]
+            pitch = self.scale.pitches[degree]
+            target_scales = [scale for scale in self.scale.key.scales if scale != self.scale]
 
-        # the circle: resolve down a fifth / up a fourth
-        for scale in self.key.scales:
-            if (self.root + 5) % 12 == scale.root:
-                self.transitions[0].append({scale: (self.root, CIRCLE)})  # purple
+            transitions = []
 
-        # dominant <-> sub-dominant
-        for scale in self.key.scales:
-            if self.root == (self.key.tonic + 5) % 12 and scale.root == (self.key.tonic + 7) % 12 or \
-               self.root == (self.key.tonic + 7) % 12 and scale.root == (self.key.tonic + 5) % 12:
-                self.transitions[0].append({scale: (scale.root, DOM)})
+            # the circle: resolve down a fifth or up a fourth
+            if degree == 0:
+                for scale in target_scales:
+                    if pitch + 5 % 12 == scale.root:
+                        transitions.append((scale, CIRCLE))
 
-        # semitone pulls from scale tone to scale tone
-        for start_degree in [0, 2, 4, 6]:  # including 7th in start, but not in target
-            if self.pitches[start_degree] == self.key.tonic:  # tonic doesn't go anywhere
-                continue
-            for scale in self.key.scales:
-                if scale == self:
-                    continue
-                for target_degree in [0, 2, 4]:
-                    # print(scale.name, start_degree + 1, target_degree + 1, (scale.pitches[target_degree] - self.pitches[start_degree]) % 12, (scale.pitches[target_degree] - self.pitches[start_degree]) % 12 == 1)
-                    if (scale.pitches[target_degree] - self.pitches[start_degree]) % 12 in (1, 11):
-                        self.transitions[start_degree].append({scale: (scale.pitches[target_degree], PULL)})
+            # dominant <-> sub-dominant
+            for scale in target_scales:
+                if degree == 4 and pitch == scale.pitches[3] or \
+                   degree == 3 and pitch == scale.pitches[4]:
+                    transitions.append((scale, CIRCLE))
 
-        # morphs (shared root/3rd, a bit controversial)
-        for scale in self.key.scales:
-            if scale.root == self.key.tonic:  # don't morph to tonic
-                continue
-            if self.root == scale.pitches[2]:
-                self.transitions[0].append({scale: (self.root, MORPH)})
-            if self.pitches[2] == scale.root:
-                self.transitions[2].append({scale: (scale.root, MORPH)})
+            # semitone pulls from scale tone to triad scale tone
+            if degree != 0:  # tonic doesn't move
+                for scale in target_scales:
+                    for target_degree in (0, 2, 4):
+                        if scale.pitches[target_degree] - pitch % 12 in (1, 11):
+                            transitions.append((scale, PULL))
+
+            # morphs (shared root/3rd)
+            for scale in target_scales:
+                if degree == 0 and pitch == scale.pitches[2] or \
+                   degree == 2 and pitch == scale.pitches[0]:
+                    transitions.append((scale, MORPH))
+
+            self.transitions[degree] = transitions
+
+
+## fuck, wait, this is treating sus4s as the third degree. is that good???
+## also have to verify that the dominant and sub-dominant is actually the 3rd and 4th degrees
+
+## if pitch == self.scale.dominant  --- and the other pitch? fuck
+
+
