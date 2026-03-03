@@ -54,12 +54,13 @@ class Chord():
     def __init__(self, scale, functional_degrees):
         self.scale = scale
         self.functional_degrees = functional_degrees
-        self.avoid_degrees = []
         self.find_avoids()
-        self.transitions = {}
+        self.flag_conflict()
         self.find_transitions()
 
     def find_avoids(self):
+
+        self.avoid_degrees = []
 
         for degree in range(1, len(self.scale.mode)):
             pdegree = degree - 1
@@ -69,19 +70,33 @@ class Chord():
                 if pdegree in self.functional_degrees:
                     self.avoid_degrees.append(degree)
 
-            # # no tritones above functional degrees other than root, unless it's a 3rd in dom7
-            # if self.scale.mode[degree] - self.scale.mode[pdegree] == 6 and degree != 0:
-            #     if not (pdegree == 2 and self.scale.mode[degree] == 10):
-            #         self.avoid_degrees.append(degree)
+            # no tritones above functional degrees other than root, unless it's a 3rd in dom7
+            # this is strict and also a berklee thing
+            for functional_degree in self.functional_degrees:
+                if functional_degree != 0:
+                    if self.scale.mode[degree] - self.scale.mode[functional_degree] == 6:
+                        if not (functional_degree == 2 and self.scale.mode[degree] == 10):
+                            self.avoid_degrees.append(degree)
+
+            # 2nds and 4ths disallow 3rd
 
         self.avoid_degrees = list(set(self.avoid_degrees))
 
+    def flag_conflict(self):
+        self.conflict = False
+        for functional_degree in self.functional_degrees:
+            if functional_degree in self.avoid_degrees:
+                self.conflict = True
+
     def find_transitions(self):
+
+        self.transitions = {}
 
         for degree in range(7):  # 0-indexed, natch
 
             pitch = self.scale.pitches[degree]
             target_scales = [scale for scale in self.scale.key.scales if scale != self.scale]
+            ## scratch that. actually allow a chord to transition to its own scale -- need that for sus4
 
             transitions = []
 

@@ -15,7 +15,9 @@ key.add_scale(11,'LOC')
 
 print(key)
 
-## a couple of instances of illegal 6th chords (well, aren't maj7s illegal?)
+# a couple of instances of illegal 6th chords (minor second above the 5th)
+# "Aeolian 6th"
+# flag them and indicate somehow?
 
 
 # Avoid Notes in Major Scale Modes (Diatonic)

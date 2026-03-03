@@ -9,12 +9,17 @@ def display(key, scale):
     for degree in (6, 5, 4, 3, 2, 1, 0):
         for ct, chord_type in enumerate(CHORDS):
             chord = scale.chords[ct]
+            if chord.conflict:
+                continue
 
             # analysis labels]
             label = scale.labels[degree]
             if isinstance(label, tuple):
                 label = label[0 if degree in chord_type else 1]
-            s.append(f"{label}".rjust(8))
+            if degree in chord_type:
+                s.append(f"{label}".rjust(4))
+            else:
+                s.append(f"".rjust(4))
 
             # pitches
             pitch_name = key.pitch_names[scale.pitches[degree]]
@@ -25,7 +30,7 @@ def display(key, scale):
                     pitch_name += '♮'
             if degree in chord.avoid_degrees:
                 s.append(f" {colored(pitch_name.ljust(2), 'red', attrs=attrs)}")
-            elif degree not in chord_type: # or degree == 4 and not len(label):  # special case for dominant
+            elif degree not in chord_type or degree == 4 and not len(label):  # special case for dominant
                 s.append(f" {colored(pitch_name.ljust(2), 'yellow', attrs=attrs)}")
             elif degree == 0:
                 attrs.append('bold')

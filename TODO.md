@@ -10,7 +10,6 @@
 
 
 
-
 ### modal interchange
 
 got the chord spelling wrong!
