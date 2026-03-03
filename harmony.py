@@ -32,7 +32,11 @@ class Scale():
         self.mode = globals()[mode_name]
         self.pitches = [(self.root + semitones) % 12 for semitones in self.mode]
         self.accidentals = [pitch not in self.key.scales[0].pitches if len(self.key.scales) else False for pitch in self.pitches]
-        self.chords = [Chord(self, kind) for kind in CHORDS]
+        self.chords = []
+        for kind in CHORDS:
+            chord = Chord(self, kind)
+            if not chord.conflict:
+                self.chords.append(chord)
         self.set_role()
 
     def set_role(self):
@@ -54,6 +58,7 @@ class Chord():
     def __init__(self, scale, functional_degrees):
         self.scale = scale
         self.functional_degrees = functional_degrees
+        self.hide_dominant = 2 in self.functional_degrees and 4 in self.functional_degrees and self.scale.mode[4] == 7
         self.find_avoids()
         self.flag_conflict()
         self.find_transitions()
@@ -65,20 +70,24 @@ class Chord():
         for degree in range(1, len(self.scale.mode)):
             pdegree = degree - 1
 
+            # in general, tensions resolve to a lower partial
+
             # no half-steps above functional degrees
             if self.scale.mode[degree] - self.scale.mode[pdegree] == 1:
                 if pdegree in self.functional_degrees:
                     self.avoid_degrees.append(degree)
 
             # no tritones above functional degrees other than root, unless it's a 3rd in dom7
-            # this is strict and also a berklee thing
+            # this is strict and also a berklee thing, and disallows some sus chords too
             for functional_degree in self.functional_degrees:
                 if functional_degree != 0:
                     if self.scale.mode[degree] - self.scale.mode[functional_degree] == 6:
                         if not (functional_degree == 2 and self.scale.mode[degree] == 10):
                             self.avoid_degrees.append(degree)
 
-            # 2nds and 4ths disallow 3rd
+            # sus disallow third
+            if degree == 2 and (1 in self.functional_degrees or 3 in self.functional_degrees):
+                self.avoid_degrees.append(degree)
 
         self.avoid_degrees = list(set(self.avoid_degrees))
 
@@ -126,6 +135,8 @@ class Chord():
                     transitions.append((scale, MORPH))
 
             self.transitions[degree] = transitions
+
+
 
 
 ## fuck, wait, this is treating sus4s as the third degree. is that good???

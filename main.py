@@ -1,7 +1,7 @@
 #!venv/bin/python
 
 import sys
-from chord import *
+from harmony import *
 
 # MAJOR
 
@@ -14,10 +14,6 @@ key.add_scale(9, 'AOL')
 key.add_scale(11,'LOC')
 
 print(key)
-
-# a couple of instances of illegal 6th chords (minor second above the 5th)
-# "Aeolian 6th"
-# flag them and indicate somehow?
 
 
 # Avoid Notes in Major Scale Modes (Diatonic)

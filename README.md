@@ -10,12 +10,11 @@ To move between voiced chords, use voice-leading: stepwise motion, avoiding para
 
 To move between scales, it turns out there are 4 types of transitions: circle of 5/4ths, dominant to sub-dominant and vice versa, step-wise resolution of chord tones (for now, the target has to be in the triad), and "morphs" where there is a shared root or 3rd. This is what is meant by "functional" (and those last two rules do privilege 3rds, which could be expanded)
 
+Avoid notes are minor seconds or tritones with chord tones—they can be used, but they destablize those notes and prevent them from being functional. A more fundamental way to say this is that they are notes with a lower partial than the one that is supposed to be in the chord, so they will change its meaning. (although I guess avoiding 3rds in sus chords doesn't follow that)
+
 "degrees" are the notes of a scale
 "steps" are the chromatic notes relative to the tonic
 "pitches" are the absolute notes
-
-Avoid notes are minor seconds or tritones with chord tones—they can be used, but they destablize those notes and prevent them from being functional. 
-
 
 /
 

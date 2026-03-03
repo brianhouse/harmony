@@ -1,12 +1,10 @@
+## next
+
 
 
 ## todo
 
-- should bold transistions when there's multiple to one chord -- strong tendency
-
-- what do the colors mean again?
-
-
+- should bold transistions when there's multiple to one chord -- strong tendency, actually, even more of a rank
 
 
 
