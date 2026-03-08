@@ -4,8 +4,9 @@
 
 ## todo
 
-- should bold transistions when there's multiple to one chord -- strong tendency, actually, even more of a rank
+- should bold transistions when there's multiple to one chord -- strong tendency, actually, even more of a rank (use * and ** etc). only thing is that this doesn't necessarily flag that any given chord has a stronger pull, have to use both. but that is deciferable maybe.
 
+- constants for allowing or disallowing tritone avoids?
 
 
 ### modal interchange

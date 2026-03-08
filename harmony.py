@@ -112,20 +112,18 @@ class Chord():
             if pitch == self.scale.key.tonic:
                 continue
 
-            # # the circle: resolve up a fourth /down a fifth
-            # if degree == 0:
-            #     for scale in target_scales:
-            #         if (pitch + 7) % 12 == scale.root:
-            #             transitions.append((scale, scale.root, CIRCLE))
+            # the circle: resolve up a fourth /down a fifth
+            if degree == 0:
+                for scale in target_scales:
+                    if (pitch + 7) % 12 == scale.root:
+                        transitions.append((scale, scale.root, CIRCLE))
 
-            # # dominant <-> sub-dominant
-            # if degree == 0:
-            #     for scale in target_scales:
-            #         if pitch == (self.scale.key.tonic + 5) % 12 and scale.root == (self.scale.key.tonic + 7) % 12 or \
-            #            pitch == (self.scale.key.tonic + 7) % 12 and scale.root == (self.scale.key.tonic + 5) % 12:
-            #             transitions.append((scale, scale.root, DOM))
-
-            ## is this working with sus4?
+            # dominant <-> sub-dominant
+            if degree == 0:
+                for scale in target_scales:
+                    if pitch == (self.scale.key.tonic + 5) % 12 and scale.root == (self.scale.key.tonic + 7) % 12 or \
+                       pitch == (self.scale.key.tonic + 7) % 12 and scale.root == (self.scale.key.tonic + 5) % 12:
+                        transitions.append((scale, scale.root, DOM))
 
             # semitone pulls from chord tone (excluding dominant) to scale triad
             if degree in self.functional_degrees and pitch != self.scale.root + 7:
@@ -135,59 +133,24 @@ class Chord():
                         if (target_pitch - pitch) % 12 in (1, 11):
                             transitions.append((scale, target_pitch, PULL))
 
-            # # morphs (shared root/3rd)
+            # morphs (shared root or 3rd) (a bit controversial)
+            for scale in target_scales:
+                if scale.root == self.scale.key.tonic:  # don't morph to tonic
+                    continue
+                if degree == 0 and pitch == scale.pitches[2]:
+                    transitions.append((scale, scale.pitches[2], MORPH))
+                if degree == 2 and pitch == scale.pitches[0] and degree in self.functional_degrees:
+                    transitions.append((scale, scale.pitches[0], MORPH))
+
+            # # morphs (from root or second functional degree to root or third) (more controversial)
+            # # [but then why not let the second degree be a target too? ... because I don't have that with scales]
             # for scale in target_scales:
-            #     if degree == 0 and pitch == scale.pitches[2] or \
-            #        degree == 2 and pitch == scale.pitches[0]:
-            #         transitions.append((scale, MORPH))
+            #     if scale.root == self.scale.key.tonic:  # don't morph to tonic
+            #         continue
+            #     if degree == 0 and pitch == scale.pitches[2]:
+            #         transitions.append((scale, scale.pitches[2], MORPH))
+            #     if degree == self.functional_degrees[1] and pitch == scale.pitches[0]:
+            #         transitions.append((scale, scale.pitches[0], MORPH))
 
             self.transitions[degree] = transitions
 
-            ## use * and ** etc to indicate multiple to same scale
-
-
-
-## fuck, wait, this is treating sus4s as the third degree. is that good???
-## also have to verify that the dominant and sub-dominant is actually the 3rd and 4th degrees
-
-## if pitch == self.scale.dominant  --- and the other pitch? fuck
-
-
-# def find_leads(self):
-
-#        ## colors should be in display
-#        ## leads should be in categories, maybe
-
-#        self.leads = [[] for i in range(len(self.mode))]
-
-#        # the circle: resolve down a fifth / up a fourth
-#        for chord in self.key.chords:
-#            if (self.root + 5) % 12 == chord.root:
-#                self.leads[0].append({chord: (self.root, 'light_blue')}) # looks purple
-
-#        # dominant / sub-dominant symmetry
-#        for chord in self.key.chords:
-#            if self.root == (self.key.tonic + 5) % 12 and chord.root == (self.key.tonic + 7) % 12 or \
-#               self.root == (self.key.tonic + 7) % 12 and chord.root == (self.key.tonic + 5) % 12:
-#                self.leads[0].append({chord: (chord.root, 'light_cyan')})
-
-#        # semitone pulls from chord tone to chord tone
-#        for start_degree in [0, 2, 4, 6]:  # including 7th in start, but not in target
-#            if self.pitches[start_degree] == self.key.tonic: # tonic doesn't go anywhere
-#                continue
-#            for chord in self.key.chords:
-#                if chord == self:
-#                    continue
-#                for target_degree in [0, 2, 4]:
-#                    # print(chord.name, start_degree + 1, target_degree + 1, (chord.pitches[target_degree] - self.pitches[start_degree]) % 12, (chord.pitches[target_degree] - self.pitches[start_degree]) % 12 == 1)
-#                    if (chord.pitches[target_degree] - self.pitches[start_degree]) % 12 in (1, 11):
-#                        self.leads[start_degree].append({chord: (chord.pitches[target_degree], 'light_green')})
-
-#        # morphs (shared root/3rd, a bit controversial)
-#        for chord in self.key.chords:
-#            if chord.root == self.key.tonic:  # don't morph to tonic
-#                continue
-#            if self.root == chord.pitches[2]:
-#                self.leads[0].append({chord: (self.root, 'magenta')})
-#            if self.pitches[2] == chord.root:
-#                self.leads[2].append({chord: (chord.root, 'magenta')})
