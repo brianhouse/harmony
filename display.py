@@ -7,6 +7,7 @@ def display(key, scale):
     s.append(f"{colored(scale.function + " " + scale.mode_name.rjust(0), 'white', attrs=['bold'])}\n")
 
     for degree in (6, 5, 4, 3, 2, 1, 0):
+        s.append("".rjust(6))
         for ct, chord_type in enumerate(CHORDS):
 
             # find the chord type
@@ -16,7 +17,7 @@ def display(key, scale):
                     found = True
                     break
             if not found:
-                s.append("".rjust(8))
+                s.append("".rjust(6))
                 continue
 
             # analysis labels]
@@ -24,9 +25,9 @@ def display(key, scale):
             if isinstance(label, tuple):
                 label = label[0 if degree in chord_type else 1]
             if degree in chord_type:
-                s.append(f"{label}".rjust(5))
+                s.append(f"{label}".rjust(3))
             else:
-                s.append("".rjust(5))
+                s.append("".rjust(3))
 
             # pitches
             pitch_name = key.pitch_names[scale.pitches[degree]]
@@ -45,22 +46,21 @@ def display(key, scale):
             else:
                 s.append(f" {colored(pitch_name.ljust(2), 'cyan', attrs=attrs)}")
 
-            # # transitions
-            # if len(chord.transitions[degree]):
-            #     s.append("→ ")
-            #     for transition in chord.transitions[degree]:
-            #         for ch, (pitch, kind) in transition.items():
-            #             if kind == CIRCLE:
-            #                 color = 'light_blue'  # looks purple
-            #             elif kind == DOM:
-            #                 color = 'light_cyan'
-            #             elif kind == PULL:
-            #                 color = 'green'
-            #             elif kind == MORPH:
-            #                 color = 'magenta'
-            #             target = '(' + key.pitch_names[pitch] + ')' if pitch != ch.root else ""
-            #             # s.append(f"{colored(ch.labels[0] + ch.labels[2] + ch.labels[6] + target, color)} ")
-            #             # s.append(f"{colored(ch.labels[0] + ':' + key.pitch_names[ch.root] + ch.labels[2] + ch.labels[4] + ch.labels[6] + target, color, attrs=[])} ")
-            #             s.append(f"{colored(ch.labels[0] + ':' + key.pitch_names[ch.root] + target, color, attrs=[])} ")
+            # transitions
+            if degree in chord.transitions:
+                s.append("→ ")
+                for transition in chord.transitions[degree]:
+                    target_scale, target_pitch, kind = transition
+                    if kind == CIRCLE:
+                        color = 'light_blue'  # looks purple
+                    elif kind == DOM:
+                        color = 'light_cyan'
+                    elif kind == PULL:
+                        color = 'green'
+                    elif kind == MORPH:
+                        color = 'magenta'
+                    target = '(' + key.pitch_names[target_pitch] + ')' if target_pitch != target_scale.root else ""
+                    s.append(f"{colored(target_scale.function + ':' + key.pitch_names[target_scale.root] + target, color, attrs=[])} ")
+
         s.append("\n")
     return "".join(s)
