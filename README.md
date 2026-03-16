@@ -20,3 +20,6 @@ Avoid notes are minor seconds or tritones with chord tones—they can be used, b
 
 For my top-down process, it's 1) pick the scales for quality and function, 2) pick the chord, 3) voice the notes. How the notes are voiced also depends on the horizontal relationship, transitions, voicing-leading etc.
 
+/
+
+it's generative ... but it also just allows me to see what's going on

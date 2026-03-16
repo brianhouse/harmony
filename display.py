@@ -3,9 +3,9 @@ from constants import *
 
 
 def display(key, scale):
+
     s = []
     s.append(f"{colored(scale.function + " " + scale.mode_name.rjust(0), 'white', attrs=['bold'])}\n")
-
     for degree in (6, 5, 4, 3, 2, 1, 0):
         s.append("".rjust(6))
         for ct, chord_type in enumerate(CHORDS):
@@ -46,21 +46,24 @@ def display(key, scale):
             else:
                 s.append(f" {colored(pitch_name.ljust(2), 'cyan', attrs=attrs)}")
 
-            # transitions
-            if degree in chord.transitions:
-                s.append("→ ")
-                for transition in chord.transitions[degree]:
-                    target_scale, target_pitch, kind = transition
-                    if kind == CIRCLE:
-                        color = 'light_blue'  # looks purple
-                    elif kind == DOM:
-                        color = 'light_cyan'
-                    elif kind == PULL:
-                        color = 'green'
-                    elif kind == MORPH:
-                        color = 'magenta'
-                    target = '(' + key.pitch_names[target_pitch] + ')' if target_pitch != target_scale.root else ""
-                    s.append(f"{colored(target_scale.function + ':' + key.pitch_names[target_scale.root] + target, color, attrs=[])} ")
+        ## have to collate chord transitions first
+        # transitions
+        if degree in scale.tallies:
+            if len(scale.tallies[degree]):
+                s.append(f" {colored("  → ", 'grey', attrs=attrs)}")
+            for transition in scale.tallies[degree]:
+                target_scale, target_pitch, kind = transition
+                strength = scale.strengths[target_scale]
+                if kind == CIRCLE:
+                    color = 'light_blue'  # looks purple
+                elif kind == DOM:
+                    color = 'light_cyan'
+                elif kind == PULL:
+                    color = 'green'
+                elif kind == MORPH:
+                    color = 'magenta'
+                target = '(' + key.pitch_names[target_pitch] + ')' if target_pitch != target_scale.root else ""
+                s.append(f"{colored(target_scale.function + ':' + key.pitch_names[target_scale.root] + target + ((strength - 1) * "*"), color, attrs=[])} ")
 
         s.append("\n")
     return "".join(s)

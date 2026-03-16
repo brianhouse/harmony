@@ -1,5 +1,6 @@
 from constants import *
 from display import display
+import json
 
 
 class Key():
@@ -15,11 +16,12 @@ class Key():
     def add_scale(self, step, mode_name):
         scale = Scale(self, self.tonic + step, mode_name)
         self.scales.append(scale)
+
+    def __str__(self):
         for scale in self.scales:
             for chord in scale.chords:
                 chord.find_transitions()
-
-    def __str__(self):
+            scale.find_strengths()
         return "\n".join([display(self, scale) for scale in self.scales[::-1]])
 
 
@@ -51,6 +53,29 @@ class Scale():
                 print('label', LABELS[step])
                 print('step', self.mode[step])
                 raise e
+
+    def find_strengths(self):
+        self.tallies = {}
+        for chord in self.chords:
+            for degree, transitions in chord.transitions.items():
+                if not len(transitions):
+                    continue
+                for transition in transitions:
+                    if degree not in self.tallies:
+                        self.tallies[degree] = []
+                    scale, target, kind = transition
+                    self.tallies[degree].append(transition)
+        for degree, tally in self.tallies.items():
+            self.tallies[degree] = list(set(tally))
+        # print(json.dumps(self.tallies, indent=4, default=lambda x: str(x)))
+
+        self.strengths = {}
+        for degee, tally in self.tallies.items():
+            for transition in tally:
+                scale, target, kind = transition
+                if scale not in self.strengths:
+                    self.strengths[scale] = 0
+                self.strengths[scale] += 1
 
 
 class Chord():
