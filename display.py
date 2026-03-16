@@ -46,12 +46,11 @@ def display(key, scale):
             else:
                 s.append(f" {colored(pitch_name.ljust(2), 'cyan', attrs=attrs)}")
 
-        ## have to collate chord transitions first
         # transitions
-        if degree in scale.tallies:
-            if len(scale.tallies[degree]):
+        if degree in scale.transitions:
+            if len(scale.transitions[degree]):
                 s.append(f" {colored("  → ", 'grey', attrs=attrs)}")
-            for transition in scale.tallies[degree]:
+            for transition in scale.transitions[degree]:
                 target_scale, target_pitch, kind = transition
                 strength = scale.strengths[target_scale]
                 if kind == CIRCLE:

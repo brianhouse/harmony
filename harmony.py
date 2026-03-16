@@ -55,22 +55,20 @@ class Scale():
                 raise e
 
     def find_strengths(self):
-        self.tallies = {}
+        self.transitions = {}
         for chord in self.chords:
             for degree, transitions in chord.transitions.items():
                 if not len(transitions):
                     continue
                 for transition in transitions:
-                    if degree not in self.tallies:
-                        self.tallies[degree] = []
+                    if degree not in self.transitions:
+                        self.transitions[degree] = []
                     scale, target, kind = transition
-                    self.tallies[degree].append(transition)
-        for degree, tally in self.tallies.items():
-            self.tallies[degree] = list(set(tally))
-        # print(json.dumps(self.tallies, indent=4, default=lambda x: str(x)))
-
+                    self.transitions[degree].append(transition)
+        for degree, tally in self.transitions.items():
+            self.transitions[degree] = list(set(tally))
         self.strengths = {}
-        for degee, tally in self.tallies.items():
+        for degee, tally in self.transitions.items():
             for transition in tally:
                 scale, target, kind = transition
                 if scale not in self.strengths:
