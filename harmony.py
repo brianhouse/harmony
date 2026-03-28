@@ -13,8 +13,8 @@ class Key():
         self.scales = []
         self.add_scale(0, 'AOL' if maj_min == 'MINOR' else 'ION')
 
-    def add_scale(self, step, mode_name):
-        scale = Scale(self, self.tonic + step, mode_name)
+    def add_scale(self, step, mode_name, parent=None):
+        scale = Scale(self, self.tonic + step, mode_name, parent=parent)
         self.scales.append(scale)
 
     def __str__(self):
@@ -27,11 +27,22 @@ class Key():
 
 class Scale():
 
-    def __init__(self, key, root, mode_name):
+    def __init__(self, key, root, mode_name, parent=None):
         self.key = key
         self.root = root
         self.mode_name = mode_name
         self.mode = globals()[mode_name]
+        if parent is not None:
+            parent_mode = globals()[parent]
+            if parent_mode[2] == 3:  # minor; go up to relative major
+                relative_major = (key.tonic + 3) % 12
+            else:
+                relative_major = key.tonic
+            if PITCHES_FLAT[relative_major] in KEYS:
+                key_index = KEYS.index(PITCHES_FLAT[relative_major])
+                self.pitch_names = PITCHES_FLAT if key_index > 6 else PITCHES_SHARP
+        else:
+            self.pitch_names = key.pitch_names
         self.pitches = [(self.root + semitones) % 12 for semitones in self.mode]
         self.accidentals = [pitch not in self.key.scales[0].pitches if len(self.key.scales) else False for pitch in self.pitches]
         self.chords = []
@@ -100,13 +111,16 @@ class Chord():
                 if pdegree in self.functional_degrees:
                     self.avoid_degrees.append(degree)
 
-            # no tritones above functional degrees other than root, unless it's a 3rd in dom7
+            # no tritones above functional degrees other than root
+            # ...unless it's above a maj 3rd in dom7
+            # ...or fully diminished
             # this is strict and also a berklee thing, and disallows some sus chords too
             for functional_degree in self.functional_degrees:
                 if functional_degree != 0:
                     if self.scale.mode[degree] - self.scale.mode[functional_degree] == 6:
-                        if not (functional_degree == 2 and self.scale.mode[degree] == 10):
-                            self.avoid_degrees.append(degree)
+                        if not (self.scale.mode[functional_degree] == 4 and self.scale.mode[degree] == 10):
+                            if not (self.scale.mode[functional_degree] == 3 and self.scale.mode[degree] == 9):
+                                self.avoid_degrees.append(degree)
 
             # sus disallow third
             if degree == 2 and (1 in self.functional_degrees or 3 in self.functional_degrees):
@@ -138,7 +152,7 @@ class Chord():
             # the circle: resolve up a fourth /down a fifth
             if degree == 0:
                 for scale in target_scales:
-                    if (pitch + 7) % 12 == scale.root:
+                    if (pitch - 7) % 12 == scale.root:
                         transitions.append((scale, scale.root, CIRCLE))
 
             # dominant <-> sub-dominant
@@ -165,7 +179,7 @@ class Chord():
                 if degree == 2 and pitch == scale.pitches[0] and degree in self.functional_degrees:
                     transitions.append((scale, scale.pitches[0], MORPH))
 
-            # # morphs (from root or second functional degree to root or third) (more controversial)
+            # # # morphs (from root or second functional degree to root or third) (more controversial)
             # # [but then why not let the second degree be a target too? ... because I don't have that with scales]
             # for scale in target_scales:
             #     if scale.root == self.scale.key.tonic:  # don't morph to tonic

@@ -30,7 +30,7 @@ def display(key, scale):
                 s.append("".rjust(3))
 
             # pitches
-            pitch_name = key.pitch_names[scale.pitches[degree]]
+            pitch_name = scale.pitch_names[scale.pitches[degree]]
             attrs = []
             if scale.accidentals[degree]:
                 attrs.append('underline')
@@ -61,8 +61,8 @@ def display(key, scale):
                     color = 'green'
                 elif kind == MORPH:
                     color = 'magenta'
-                target = '(' + key.pitch_names[target_pitch] + ')' if target_pitch != target_scale.root else ""
-                s.append(f"{colored(target_scale.function + ':' + key.pitch_names[target_scale.root] + target + ((strength - 1) * "*"), color, attrs=[])} ")
+                target = '(' + scale.pitch_names[target_pitch] + ')' if target_pitch != target_scale.root else ""
+                s.append(f"{colored(target_scale.function + ':' + scale.pitch_names[target_scale.root] + target + ((strength - 1) * "*"), color, attrs=[])} ")
 
         s.append("\n")
     return "".join(s)

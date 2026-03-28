@@ -4,9 +4,12 @@
 
 ## todo
 
-- should bold transistions when there's multiple to one chord -- strong tendency, actually, even more of a rank (use * and ** etc). only thing is that this doesn't necessarily flag that any given chord has a stronger pull, have to use both. but that is deciferable maybe.
+ULT b4 is wrong
 
-- constants for allowing or disallowing tritone avoids?
+You're now getting VII:B appearing frequently as a destination throughout the lower modes — but now VII is ambiguous again between LOC and ULT. Is the chart distinguishing between those two when listing VII as a destination?
+
+- auto-flag secondary dominants?
+
 
 
 ### modal interchange

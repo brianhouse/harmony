@@ -26,6 +26,7 @@ IOMODES = ION, DOR, PHR, LYD, MYX, AOL, LOC
 
 JAZ = 0, 2, 3, 5, 7, 9, 11
 HAR = 0, 2, 3, 5, 7, 8, 11
+ULT = rot(HAR, 6)
 
 # https://en.wikipedia.org/wiki/Jazz_minor_scale
 # https://en.wikipedia.org/wiki/Acoustic_scale
@@ -38,13 +39,13 @@ FUNCTIONS = 'I', '', 'II', '♭III', 'III', 'IV', '♯IV', 'V', '♭VI', 'VI', '
 
 # functional (not exhaustive) notes in chord types
 # 1, ([2, 3, 4], 5, [6, 7])  # as named
-    # 0, ([1, 2, 3], 4, [5, 6])  # 0-indexed
+# 0, ([1, 2, 3], 4, [5, 6])  # 0-indexed
 CHORDS = [(0, 2, 4, 6),   # 7th
           (0, 2, 4, 5),   # 6th
-          # (0, 1, 4, 6),   # 7sus2
-          # (0, 3, 4, 6),   # 7sus4
-          # (0, 1, 4, 5),   # 6sus2
-          # (0, 3, 4, 5),   # 6sus4
+          (0, 3, 4, 6),   # 7sus4
+          (0, 3, 4, 5),   # 6sus4
+          (0, 1, 4, 6),   # 7sus2
+          (0, 1, 4, 5),   # 6sus2
           ]
 
 LABELS = [{0: ''},
