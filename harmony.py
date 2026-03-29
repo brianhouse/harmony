@@ -77,7 +77,7 @@ class Scale():
                     scale, target, kind = transition
                     self.transitions[degree].append(transition)
         for degree, tally in self.transitions.items():
-            self.transitions[degree] = list(set(tally))
+            self.transitions[degree] = list(dict.fromkeys(tally))
         self.strengths = {}
         for degee, tally in self.transitions.items():
             for transition in tally:
@@ -126,7 +126,7 @@ class Chord():
             if degree == 2 and (1 in self.functional_degrees or 3 in self.functional_degrees):
                 self.avoid_degrees.append(degree)
 
-        self.avoid_degrees = list(set(self.avoid_degrees))
+        self.avoid_degrees = list(dict.fromkeys(self.avoid_degrees))
 
     def flag_conflict(self):
         self.conflict = False
@@ -190,4 +190,5 @@ class Chord():
             #         transitions.append((scale, scale.pitches[0], MORPH))
 
             self.transitions[degree] = transitions
+
 
