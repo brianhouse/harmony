@@ -15,12 +15,12 @@ def rot(scale, steps):
     return [(degree + 12) if degree < 0 else degree for degree in scale]
 
 
-ION = 0, 2, 4, 5, 7, 9, 11
+ION = MAJ = 0, 2, 4, 5, 7, 9, 11
 DOR = rot(ION, 1)
 PHR = rot(ION, 2)
 LYD = rot(ION, 3)
 MYX = rot(ION, 4)
-AOL = rot(ION, 5)
+AOL = MIN = rot(ION, 5)
 LOC = rot(ION, 6)
 IOMODES = ION, DOR, PHR, LYD, MYX, AOL, LOC
 

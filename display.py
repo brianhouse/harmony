@@ -38,6 +38,7 @@ def display(key, scale):
                     pitch_name += '♮'
             if degree in chord.avoid_degrees:
                 s.append(f" {colored(pitch_name.ljust(2), 'red', attrs=attrs)}")
+                # s.append(f" {colored("  ", 'red', attrs=attrs)}")
             elif degree not in chord_type or degree == 4 and chord.hide_dominant:
                 s.append(f" {colored(pitch_name.ljust(2), 'yellow', attrs=attrs)}")
             elif degree == 0:

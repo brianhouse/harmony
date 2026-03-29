@@ -23,3 +23,12 @@ For my top-down process, it's 1) pick the scales for quality and function, 2) pi
 /
 
 it's generative ... but it also just allows me to see what's going on
+
+
+/
+
+a tuning is 12 frequencies
+a key is a tonic + ION or AOL => signature
+a scale is any root + mode
+a chord is 4 notes from the scale according to 1,[2,3,4],5,[6,7]{9,11,13}
+a voicing is notes on the staff

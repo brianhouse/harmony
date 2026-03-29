@@ -112,14 +112,14 @@ class Chord():
                     self.avoid_degrees.append(degree)
 
             # no tritones above functional degrees other than root
-            # ...unless it's above a maj 3rd in dom7
+            # ...unless it's a dominant (maj 3rd + dom7)
             # ...or fully diminished
             # both of which are special cases that are used very directly in functional harmony
             for functional_degree in self.functional_degrees:
                 if functional_degree != 0:
                     if self.scale.mode[degree] - self.scale.mode[functional_degree] == 6:  # tritone
                         if not (self.scale.mode[functional_degree] == 4 and self.scale.mode[degree] == 10):  # maj3 and dom7
-                            if not (self.scale.mode[functional_degree] == 3 and self.scale.mode[5] == 6 and self.scale.mode[degree] == 9):  # fully diminished
+                            if not (self.scale.mode[functional_degree] == 3 and self.scale.mode[4] == 6 and self.scale.mode[degree] == 9):  # fully diminished
                                 self.avoid_degrees.append(degree)
 
             # sus disallow third
