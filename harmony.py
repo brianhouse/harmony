@@ -106,7 +106,7 @@ class Chord():
 
             # in general, tensions resolve to a lower partial
 
-            # no half-steps above functional degrees
+            # no half-steps _above_ functional degrees (so it's not bi-directional like pulls)
             if self.scale.mode[degree] - self.scale.mode[pdegree] == 1:
                 if pdegree in self.functional_degrees:
                     self.avoid_degrees.append(degree)
@@ -114,12 +114,12 @@ class Chord():
             # no tritones above functional degrees other than root
             # ...unless it's above a maj 3rd in dom7
             # ...or fully diminished
-            # this is strict and also a berklee thing, and disallows some sus chords too
+            # both of which are special cases that are used very directly in functional harmony
             for functional_degree in self.functional_degrees:
                 if functional_degree != 0:
-                    if self.scale.mode[degree] - self.scale.mode[functional_degree] == 6:
-                        if not (self.scale.mode[functional_degree] == 4 and self.scale.mode[degree] == 10):
-                            if not (self.scale.mode[functional_degree] == 3 and self.scale.mode[degree] == 9):
+                    if self.scale.mode[degree] - self.scale.mode[functional_degree] == 6:  # tritone
+                        if not (self.scale.mode[functional_degree] == 4 and self.scale.mode[degree] == 10):  # maj3 and dom7
+                            if not (self.scale.mode[functional_degree] == 3 and self.scale.mode[5] == 6 and self.scale.mode[degree] == 9):  # fully diminished
                                 self.avoid_degrees.append(degree)
 
             # sus disallow third
@@ -162,7 +162,7 @@ class Chord():
                        pitch == (self.scale.key.tonic + 7) % 12 and scale.root == (self.scale.key.tonic + 5) % 12:
                         transitions.append((scale, scale.root, DOM))
 
-            # semitone pulls from chord tone (excluding dominant) to scale triad (bi-directional)
+            # semitone between a chord tone (excluding dominant) and a scale triad (this is bi-directional)
             if degree in self.functional_degrees and pitch != self.scale.root + 7:
                 for scale in target_scales:
                     for target_degree in (0, 2, 4):
