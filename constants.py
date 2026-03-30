@@ -26,7 +26,7 @@ IOMODES = ION, DOR, PHR, LYD, MYX, AOL, LOC
 
 JAZ = 0, 2, 3, 5, 7, 9, 11
 HAR = 0, 2, 3, 5, 7, 8, 11
-ULT = rot(HAR, 6)
+ULT = rot(HAR, 6)  # Ultralocrian
 
 # https://en.wikipedia.org/wiki/Jazz_minor_scale
 # https://en.wikipedia.org/wiki/Acoustic_scale

@@ -133,6 +133,8 @@ class Chord():
         for functional_degree in self.functional_degrees:
             if functional_degree in self.avoid_degrees:
                 self.conflict = True
+        if 3 in self.functional_degrees and self.scale.mode[3] != 5:  # no imperfect sus4 (imperfect sus2 implicitly avoided)
+            self.conflict = True
 
     def find_transitions(self):
 
