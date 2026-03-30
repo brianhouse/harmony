@@ -7,11 +7,12 @@ from harmony import *
 
 key = Key('C', 'MAJ')
 key.add_scale(2, 'DOR')
+key.add_scale(2, 'MYX')
 key.add_scale(4, 'PHR')
 key.add_scale(5, 'LYD')
 key.add_scale(7, 'MYX')
 key.add_scale(9, 'AOL')
-key.add_scale(11,'LOC')
+# key.add_scale(11,'LOC')
 key.add_scale(11,'ULT', 'MIN')
 
 print(key)

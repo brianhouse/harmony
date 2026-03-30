@@ -19,6 +19,7 @@ class Key():
 
     def __str__(self):
         for scale in self.scales:
+            scale.set_role()
             for chord in scale.chords:
                 chord.find_transitions()
             scale.find_strengths()
@@ -50,7 +51,6 @@ class Scale():
             chord = Chord(self, kind)
             if not chord.conflict:
                 self.chords.append(chord)
-        self.set_role()
 
     def set_role(self):
         self.function = FUNCTIONS[(self.root - self.key.tonic) % 12]
@@ -69,6 +69,7 @@ class Scale():
             for scale in self.key.scales:
                 if scale.root == (self.root - 7) % 12:
                     self.dominant = scale
+                    break
 
     def find_strengths(self):
         self.transitions = {}
