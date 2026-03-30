@@ -4,9 +4,7 @@
 
 ## todo
 
-ULT b4 is wrong
-
-You're now getting VII:B appearing frequently as a destination throughout the lower modes — but now VII is ambiguous again between LOC and ULT. Is the chart distinguishing between those two when listing VII as a destination?
+VII is ambiguous between LOC and ULT. Is the chart distinguishing between those two when listing VII as a destination?
 
 - auto-flag secondary dominants?
 

@@ -12,9 +12,9 @@ To move between scales, it turns out there are 4 types of transitions: circle of
 
 Avoid notes are minor seconds or tritones with chord tones—they can be used, but they destablize those notes and prevent them from being functional. A more fundamental way to say this is that they are notes with a lower partial than the one that is supposed to be in the chord, so they will change its meaning. (although I guess avoiding 3rds in sus chords doesn't follow that)
 
-"degrees" are the notes of a scale
-"steps" are the chromatic notes relative to the tonic
-"pitches" are the absolute notes
+"degrees" are the notes of a scale, 0-6
+"steps" of the "mode" are the chromatic notes relative to the tonic, 0-11
+"pitches" are the absolute notes, 0-11 but relative to C
 
 /
 
@@ -32,3 +32,20 @@ a key is a tonic + ION or AOL => signature
 a scale is any root + mode
 a chord is 4 notes from the scale according to 1,[2,3,4],5,[6,7]{9,11,13}
 a voicing is notes on the staff
+
+/
+
+A GENERATIVE APPROACH TO MUSICAL HARMONY
+
+does it in fact capture everything? does it reveal uncommon possibilities?
+
+are these rules arbitrary, or somehow linked to the harmonic series? are there weird exceptions that can ironed out and tried differently?
+
+what happens with other tunings?
+
+what if it's not 7-note scales?
+
+just like with euclidean rhythms, having a constraint (7 notes / X steps) and then an assymetry (half/whole steps, Y pulses) is what is generative of the possibilities. it's like a cellular automata.
+
+I wonder if there can be a more explicit connection with euclidean rhythms from a theory perspective?
+

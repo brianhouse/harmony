@@ -5,7 +5,9 @@ from constants import *
 def display(key, scale):
 
     s = []
-    s.append(f"{colored(scale.function + " " + scale.mode_name.rjust(0), 'white', attrs=['bold'])}\n")
+    s.append(f"{colored(scale.function + " " + scale.mode_name.rjust(0), 'white', attrs=['bold'])}")
+    s.append(f" (V/{scale.dominant.function})" if scale.dominant is not None else "")
+    s.append("\n")
     for degree in (6, 5, 4, 3, 2, 1, 0):
         s.append("".rjust(6))
         for ct, chord_type in enumerate(CHORDS):
@@ -63,7 +65,7 @@ def display(key, scale):
                 elif kind == MORPH:
                     color = 'magenta'
                 target = '(' + scale.pitch_names[target_pitch] + ')' if target_pitch != target_scale.root else ""
-                s.append(f"{colored(target_scale.function + ':' + scale.pitch_names[target_scale.root] + target + ((strength - 1) * "*"), color, attrs=[])} ")
+                s.append(f"{colored(target_scale.function + ':' + target_scale.mode_name + ':' + scale.pitch_names[target_scale.root] + target + ((strength - 1) * "*"), color, attrs=[])} ")
 
         s.append("\n")
     return "".join(s)

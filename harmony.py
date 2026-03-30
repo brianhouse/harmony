@@ -64,6 +64,11 @@ class Scale():
                 print('label', LABELS[step])
                 print('step', self.mode[step])
                 raise e
+        self.dominant = None
+        if self.mode[2] == 4 and self.mode[4] == 7 and self.mode[6] == 10:
+            for scale in self.key.scales:
+                if scale.root == (self.root - 7) % 12:
+                    self.dominant = scale
 
     def find_strengths(self):
         self.transitions = {}
