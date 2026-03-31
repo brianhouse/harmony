@@ -170,8 +170,8 @@ class Chord():
                        pitch == (self.scale.key.tonic + 7) % 12 and scale.root == (self.scale.key.tonic + 5) % 12:
                         transitions.append((scale, scale.root, DOM))
 
-            # semitone between a chord tone (excluding dominant) and a scale triad (this is bi-directional)
-            if degree in self.functional_degrees and pitch != (self.scale.root + 7) % 12:
+            # semitone between a chord tone and a scale triad (this is bi-directional)
+            if degree in self.functional_degrees:
                 for scale in target_scales:
                     for target_degree in (0, 2, 4):
                         target_pitch = scale.pitches[target_degree]
