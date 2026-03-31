@@ -7,6 +7,7 @@ def display(key, scale):
     s = []
     s.append(f"{colored(scale.function + " " + scale.mode_name.rjust(0), 'white', attrs=['bold'])}")
     s.append(f" (V/{scale.dominant.function})" if scale.dominant is not None else "")
+    s.append(f" (II/{scale.related_ii.function})" if scale.related_ii is not None else "")
     s.append("\n")
     for degree in (6, 5, 4, 3, 2, 1, 0):
         s.append("".rjust(6))

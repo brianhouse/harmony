@@ -20,9 +20,12 @@ class Key():
     def __str__(self):
         for scale in self.scales:
             scale.set_role()
+            scale.find_dominant()
             for chord in scale.chords:
                 chord.find_transitions()
             scale.find_strengths()
+        for scale in self.scales:
+            scale.find_related_ii()
         return "\n".join([display(self, scale) for scale in self.scales[::-1]])
 
 
@@ -64,11 +67,21 @@ class Scale():
                 print('label', LABELS[step])
                 print('step', self.mode[step])
                 raise e
+
+    def find_dominant(self):
         self.dominant = None
         if self.mode[2] == 4 and self.mode[4] == 7 and self.mode[6] == 10:
             for scale in self.key.scales:
                 if scale.root == (self.root - 7) % 12:
                     self.dominant = scale
+                    break
+
+    def find_related_ii(self):
+        self.related_ii = None
+        if self.mode[2] == 3 and self.mode[6] == 10:
+            for scale in self.key.scales:
+                if scale.root == (self.root + 5) % 12 and scale.dominant is not None:
+                    self.related_ii = scale
                     break
 
     def find_strengths(self):
