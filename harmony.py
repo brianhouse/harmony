@@ -14,7 +14,7 @@ class Key():
         self.add_scale(0, 'AOL' if maj_min == 'MINOR' else 'ION')
 
     def add_scale(self, step, mode_name, parent=None):
-        scale = Scale(self, self.tonic + step, mode_name, parent=parent)
+        scale = Scale(self, (self.tonic + step) % 12, mode_name, parent=parent)
         self.scales.append(scale)
 
     def __str__(self):
@@ -171,7 +171,7 @@ class Chord():
                         transitions.append((scale, scale.root, DOM))
 
             # semitone between a chord tone (excluding dominant) and a scale triad (this is bi-directional)
-            if degree in self.functional_degrees and pitch != self.scale.root + 7:
+            if degree in self.functional_degrees and pitch != (self.scale.root + 7) % 12:
                 for scale in target_scales:
                     for target_degree in (0, 2, 4):
                         target_pitch = scale.pitches[target_degree]

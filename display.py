@@ -65,6 +65,7 @@ def display(key, scale):
                 elif kind == MORPH:
                     color = 'magenta'
                 target = '(' + scale.pitch_names[target_pitch] + ')' if target_pitch != target_scale.root else ""
+                # print("scale", scale.root, "target_scale.root", target_scale.root)
                 s.append(f"{colored(target_scale.function + ':' + target_scale.mode_name + ':' + scale.pitch_names[target_scale.root] + target + ((strength - 1) * "*"), color, attrs=[])} ")
 
         s.append("\n")
