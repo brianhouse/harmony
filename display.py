@@ -43,12 +43,12 @@ def display(key, scale):
                 s.append(f" {colored(pitch_name.ljust(2), 'red', attrs=attrs)}")
                 # s.append(f" {colored("  ", 'red', attrs=attrs)}")
             elif degree not in chord_type or degree == 4 and chord.hide_dominant:
-                s.append(f" {colored(pitch_name.ljust(2), 'yellow', attrs=attrs)}")
+                s.append(f" {colored(pitch_name.ljust(2), 'light_yellow', attrs=attrs)}")
             elif degree == 0:
                 attrs.append('bold')
-                s.append(f" {colored(pitch_name.ljust(2), 'cyan', attrs=attrs)}")
+                s.append(f" {colored(pitch_name.ljust(2), 'light_cyan', attrs=attrs)}")
             else:
-                s.append(f" {colored(pitch_name.ljust(2), 'cyan', attrs=attrs)}")
+                s.append(f" {colored(pitch_name.ljust(2), 'light_cyan', attrs=attrs)}")
 
         # transitions
         if degree in scale.transitions:
@@ -58,13 +58,13 @@ def display(key, scale):
                 target_scale, target_pitch, kind = transition
                 strength = scale.strengths[target_scale]
                 if kind == CIRCLE:
-                    color = 'light_blue'  # looks purple
-                elif kind == DOM:
-                    color = 'light_cyan'
-                elif kind == PULL:
-                    color = 'green'
-                elif kind == MORPH:
                     color = 'magenta'
+                elif kind == DOM:
+                    color = 'green'
+                elif kind == PULL:
+                    color = 'cyan'
+                elif kind == MORPH:
+                    color = 'light_blue'   # looks purple
                 target = '(' + scale.pitch_names[target_pitch] + ')' if target_pitch != target_scale.root else ""
                 # print("scale", scale.root, "target_scale.root", target_scale.root)
                 s.append(f"{colored(target_scale.function + ':' + target_scale.mode_name + ':' + scale.pitch_names[target_scale.root] + target + ((strength - 1) * "*"), color, attrs=[])} ")
