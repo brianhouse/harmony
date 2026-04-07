@@ -6,10 +6,12 @@ from harmony import *
 # MAJOR
 
 key = Key('C', 'MAJ')
-key.add_scale(2, 'DOR')
+# key.add_scale(2, 'DOR')
 key.add_scale(2, 'MYX')
 key.add_scale(4, 'PHR')
-key.add_scale(5, 'LYD')
+# key.add_scale(4, 'DOR')
+# key.add_scale(5, 'LYD')
+key.add_scale(5, 'DOR', 'MIN')   # IV-7 borrowed from AOLIAN
 key.add_scale(7, 'MYX')
 key.add_scale(9, 'AOL')
 # key.add_scale(11,'LOC')

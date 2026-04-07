@@ -7,7 +7,7 @@ def display(key, scale):
     s = []
     s.append(f"{colored(scale.function + " " + scale.mode_name.rjust(0), 'white', attrs=['bold'])}")
     s.append(f" (V/{scale.dominant.function})" if scale.dominant is not None else "")
-    s.append(f" (II/{scale.related_ii.function})" if scale.related_ii is not None else "")
+    s.append(f" (II/{scale.related_ii.dominant.function})" if scale.related_ii is not None else "")
     s.append("\n")
     for degree in (6, 5, 4, 3, 2, 1, 0):
         s.append("".rjust(6))
@@ -23,14 +23,16 @@ def display(key, scale):
                 s.append("".rjust(6))
                 continue
 
-            # analysis labels]
+            # analysis labels
             label = scale.labels[degree]
             if isinstance(label, tuple):
                 label = label[0 if degree in chord_type else 1]
             if degree in chord_type:
                 s.append(f"{label}".rjust(3))
+            elif degree not in chord.avoid_degrees:
+                s.append(f"{colored(label.rjust(3), 'black')}")
             else:
-                s.append("".rjust(3))
+                s.append(f" ".rjust(3))
 
             # pitches
             pitch_name = scale.pitch_names[scale.pitches[degree]]
@@ -41,7 +43,6 @@ def display(key, scale):
                     pitch_name += '♮'
             if degree in chord.avoid_degrees:
                 s.append(f" {colored(pitch_name.ljust(2), 'red', attrs=attrs)}")
-                # s.append(f" {colored("  ", 'red', attrs=attrs)}")
             elif degree not in chord_type or degree == 4 and chord.hide_dominant:
                 s.append(f" {colored(pitch_name.ljust(2), 'light_yellow', attrs=attrs)}")
             elif degree == 0:
@@ -53,7 +54,7 @@ def display(key, scale):
         # transitions
         if degree in scale.transitions:
             if len(scale.transitions[degree]):
-                s.append(f" {colored("  → ", 'grey', attrs=attrs)}")
+                s.append(f" {colored("  → ", 'grey', attrs=[])}")
             for transition in scale.transitions[degree]:
                 target_scale, target_pitch, kind = transition
                 strength = scale.strengths[target_scale]
@@ -65,7 +66,7 @@ def display(key, scale):
                     color = 'cyan'
                 elif kind == MORPH:
                     color = 'light_blue'   # looks purple
-                target = '(' + scale.pitch_names[target_pitch] + ')' if target_pitch != target_scale.root else ""
+                target = '(' + target_scale.pitch_names[target_pitch] + ')' if target_pitch != target_scale.root else ""
                 # print("scale", scale.root, "target_scale.root", target_scale.root)
                 s.append(f"{colored(target_scale.function + ':' + target_scale.mode_name + ':' + scale.pitch_names[target_scale.root] + target + ((strength - 1) * "*"), color, attrs=[])} ")
 
